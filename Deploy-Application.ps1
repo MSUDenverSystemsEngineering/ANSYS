@@ -127,9 +127,15 @@ Try {
 		Show-InstallationProgress
 
 		## <Perform Pre-Installation tasks here>
+		##Checks for Ansys 19 and uninstalls if found
 		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v190") {
 			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+		}
+
+		##Checks for previous license information and deletes
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\Shared Files\Licensing") {
+			Get-ChildItem -Path "$envProgramFiles\ANSYS Inc\Shared Files\Licensing" -Recurse | Remove-Item -Force -Recurse
 		}
 
 		##*===============================================
@@ -190,7 +196,7 @@ Try {
 		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## $exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
-		If (Test-Path -Path "$envProgramFiles\ANSYS Inc") {
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\") {
 			Get-ChildItem -Path "$envProgramFiles\ANSYS Inc\" -Recurse | Remove-Item -Force -Recurse
 			Remove-Item -Path "$envProgramFiles\ANSYS Inc\" -Force
 		}
