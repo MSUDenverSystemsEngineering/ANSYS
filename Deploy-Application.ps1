@@ -137,7 +137,7 @@ Try {
 		}
 
 		## <Perform Installation tasks here>
-		Execute-Process -Path "$dirFiles\setup.exe" -Parameters "-silent -disablerss -licserverinfo `"::vmwas32.winad.msudenver.edu`" -nohelp" -PassThru
+		Execute-Process -Path "$dirFiles\setup.exe" -Parameters "-silent -disablerss -licserverinfo `"::vmwas22.winad.msudenver.edu`" -nohelp" -PassThru
 		## $exitCode = Execute-Process -Path "$dirFiles\setup.exe" -Parameters "-silent -disablerss -licserverinfo `"::vmwas32.winad.msudenver.edu`" -nohelp" -PassThru
 		## If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
