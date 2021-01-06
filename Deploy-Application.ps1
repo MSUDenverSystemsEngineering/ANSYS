@@ -196,10 +196,12 @@ Try {
 		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## $exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
-		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\") {
-			Get-ChildItem -Path "$envProgramFiles\ANSYS Inc\" -Recurse | Remove-Item -Force -Recurse
-			Remove-Item -Path "$envProgramFiles\ANSYS Inc\" -Force
+
+		##Checks for previous license information and deletes, keeping other files in the "Shared Files"
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\Shared Files\Licensing") {
+			Get-ChildItem -Path "$envProgramFiles\ANSYS Inc\Shared Files\Licensing" -Recurse | Remove-Item -Force -Recurse
 		}
+
 		##*===============================================
 		##* POST-UNINSTALLATION
 		##*===============================================
