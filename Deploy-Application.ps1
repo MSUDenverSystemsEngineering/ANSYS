@@ -128,7 +128,7 @@ Try {
 
 		## <Perform Pre-Installation tasks here>
 		##Checks for Ansys 19 and uninstalls if found
-		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v190") {
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe") {
 			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 		}
