@@ -234,6 +234,10 @@ Try {
 			Execute-MSI @ExecuteDefaultMSISplat
 		}
 		# <Perform Repair tasks here>
+		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+		Show-DialogBox -Title "Ansys 2020 Uninstalled" -Text "Ansys 2020 has been uninstalled and will now be reinstalled, thank you for your patience."
+		Execute-Process -Path "$dirFiles\setup.exe" -Parameters "-silent -disablerss -licserverinfo `"::vmwas22.winad.msudenver.edu`" -nohelp" -PassThru
+		Show-DialogBox -Title "Repair complete" -Text "Thank you for your patience, Ansys 2020 has been repaired"
 
 		##*===============================================
 		##* POST-REPAIR
