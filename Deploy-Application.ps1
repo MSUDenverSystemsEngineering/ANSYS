@@ -67,12 +67,12 @@ Try {
 	## Variables: Application
 	[string]$appVendor = 'ANSYS'
 	[string]$appName = 'Structures Full Package'
-	[string]$appVersion = '2020 R2'
+	[string]$appVersion = '2021 R1'
 	[string]$appArch = 'x64'
 	[string]$appLang = 'EN'
 	[string]$appRevision = '01'
 	[string]$appScriptVersion = '1.0.0'
-	[string]$appScriptDate = '01/05/2021'
+	[string]$appScriptDate = '05/20/2021'
 	[string]$appScriptAuthor = 'James Hardy'
 	##*===============================================
 	## Variables: Install Titles (Only set here to override defaults set by the toolkit)
@@ -121,18 +121,28 @@ Try {
 		[string]$installPhase = 'Pre-Installation'
 
 		## Show Welcome Message, close Internet Explorer if required, verify there is enough disk space to complete the install, and persist the prompt
-		Show-InstallationWelcome -CloseApps 'iexplore' -CheckDiskSpace -PersistPrompt
+		Show-InstallationWelcome -CloseApps 'ansys' -CheckDiskSpace -PersistPrompt
 
 		## Show Progress Message (with the default message)
 		Show-InstallationProgress
 
 		## <Perform Pre-Installation tasks here>
-		##Checks for Ansys 19 and uninstalls if found
+		##Checks for two previous versions and uninstalls if found
 		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe") {
 			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 		}
 
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe") {
+			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+		}
+
+		##Attempts to unisntall broken 2021 installation
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe") {
+			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+		}
 		##Checks for previous license information and deletes
 		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\Shared Files\Licensing") {
 			Get-ChildItem -Path "$envProgramFiles\ANSYS Inc\Shared Files\Licensing" -Recurse | Remove-Item -Force -Recurse
@@ -193,7 +203,7 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## $exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
@@ -234,10 +244,16 @@ Try {
 			Execute-MSI @ExecuteDefaultMSISplat
 		}
 		# <Perform Repair tasks here>
-		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
-		Show-DialogBox -Title "Ansys 2020 Uninstalled" -Text "Ansys 2020 has been uninstalled and will now be reinstalled, thank you for your patience."
+		try {
+			Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+			Show-DialogBox -Title "Ansys 2021" -Text "Ansys 2021 has been uninstalled and will now be reinstalled, thank you for your patience."
+		}
+		catch {
+			Show-DialogBox -Title "Ansys 2021" -Text "Ansys 2021 has not been found on your computer. Ansys 2021 will now be reinstalled."
+		}
+
 		Execute-Process -Path "$dirFiles\setup.exe" -Parameters "-silent -disablerss -licserverinfo `"::vmwas22.winad.msudenver.edu`" -nohelp" -PassThru
-		Show-DialogBox -Title "Repair complete" -Text "Thank you for your patience, Ansys 2020 has been repaired"
+		Show-DialogBox -Title "Ansys 2021" -Text "Thank you for your patience, Ansys 2021 has been repaired"
 
 		##*===============================================
 		##* POST-REPAIR
