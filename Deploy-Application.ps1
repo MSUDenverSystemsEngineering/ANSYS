@@ -67,12 +67,12 @@ Try {
 	## Variables: Application
 	[string]$appVendor = 'ANSYS'
 	[string]$appName = 'Structures Full Package'
-	[string]$appVersion = '2021 R1'
+	[string]$appVersion = '2021 R2'
 	[string]$appArch = 'x64'
 	[string]$appLang = 'EN'
 	[string]$appRevision = '01'
 	[string]$appScriptVersion = '1.0.0'
-	[string]$appScriptDate = '05/20/2021'
+	[string]$appScriptDate = '07/21/2021'
 	[string]$appScriptAuthor = 'James Hardy'
 	##*===============================================
 	## Variables: Install Titles (Only set here to override defaults set by the toolkit)
@@ -183,7 +183,7 @@ Try {
 		[string]$installPhase = 'Pre-Uninstallation'
 
 		## Show Welcome Message, close Internet Explorer with a 60 second countdown before automatically closing
-		Show-InstallationWelcome -CloseApps 'iexplore' -CloseAppsCountdown 60
+		Show-InstallationWelcome -CloseApps 'Ansys' -CloseAppsCountdown 60
 
 		## Show Progress Message (with the default message)
 		Show-InstallationProgress
