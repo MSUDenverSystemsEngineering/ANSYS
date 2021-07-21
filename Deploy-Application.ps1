@@ -128,18 +128,18 @@ Try {
 
 		## <Perform Pre-Installation tasks here>
 		##Checks for two previous versions and uninstalls if found
-		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe") {
-			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v190\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
-			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
-		}
-
 		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe") {
 			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 		}
 
-		##Attempts to unisntall broken 2021 installation
 		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe") {
+			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+		}
+
+		##Attempts to unisntall broken 2021 installation
+		If (Test-Path -Path "$envProgramFiles\ANSYS Inc\v212\Uninstall.exe") {
 			$exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 			If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 		}
@@ -203,7 +203,7 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+		Execute-Process -Path "$envProgramFiles\ANSYS Inc\v212\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## $exitCode = Execute-Process -Path "$envProgramFiles\ANSYS Inc\v202\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 		## If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
@@ -245,7 +245,7 @@ Try {
 		}
 		# <Perform Repair tasks here>
 		try {
-			Execute-Process -Path "$envProgramFiles\ANSYS Inc\v211\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
+			Execute-Process -Path "$envProgramFiles\ANSYS Inc\v212\Uninstall.exe" -Parameters "-silent" -WindowStyle "Hidden" -PassThru
 			Show-DialogBox -Title "Ansys 2021" -Text "Ansys 2021 has been uninstalled and will now be reinstalled, thank you for your patience."
 		}
 		catch {
